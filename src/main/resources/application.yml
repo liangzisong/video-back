@@ -1,0 +1,55 @@
+server:
+  port: 8005
+spring:
+  profiles:
+    # 开发环境
+    active: dev
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource            # 当前数据源操作类型
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    #    jdbc-url: jdbc:mysql://47.93.196.143:33077/xxh?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:p6spy:mysql://localhost:3306/video_db?useUnicode=true&useSSL=false&serverTimezone=UTC
+    username: root
+    password: 123456
+    #    url: jdbc:mysql://39.99.170.178:3306/xxk?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    #    username: xxh
+    #    password: SDworan1!
+    platform: mysql
+    initialSize: 5 #初始化连接数
+    minIdle: 5 #最小连接数
+    maxActive: 20 #最大连接数
+    maxWait: 60000 #获取连接最大等待时间
+    timeBetweenEvictionRunsMillis: 60000 #检测连接有效性的时间间隔
+    minEvictableIdleTimeMillis: 300000 #连接保持空闲而不被驱逐的最长时间
+    validationQuery: SELECT 1 FROM DUAL #连接有效性，检测sql
+    testWhileIdle: true #定时检测空闲连接有效性
+    testOnBorrow: false #检测获取的连接的有效性
+    testOnReturn: false #检测要归还的连接的有效性
+    poolPreparedStatements: true #是否缓存preparedStatement，即PSCache。PSCache对支持游标的数据库性能提升巨大，比如说oracle。在mysql下建议关闭。
+    # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+    filters: stat,wall
+    maxPoolPreparedStatementPerConnectionSize: 20
+    useGlobalDataSourceStat: true
+    connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
+#    redis:
+#      host: 119.3.170.170               # 地址
+#      password: song1478963251!    # 密码
+#      port: 9736                        # 端口号
+#      database: 4                       #使用的redis库
+#      jedis:
+#        pool:
+#          max-active: 8
+#          max-wait: -1ms
+#          max-idle: 8
+#          min-idle: 0
+#      timeout: 5000ms
+mybatis:
+  mapper-locations:
+    classpath: mapper/modules/*.xml
+  type-aliases-package: com.lzs.videoback.modules.entity
+  configuration:
+    # 控制台输出sql
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-prefix: mapper.
+    cache-enabled: false
